@@ -1,25 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<form action="{%url 'add-product'%}" method="post">
-{%csrf_token%}
-<div>
-    <label>name</label>
-</div>
-<input name="name" >
-<div>
-    <label>price</label>
-</div>
-<input name="price">
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mahsulot Qo'shish</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 flex items-center justify-center min-h-screen px-4">
+    <form action="{% url 'add-product' %}" method="post"
+          class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md space-y-6">
+      {% csrf_token %}
+      <h2 class="text-3xl font-bold text-center text-indigo-700">Mahsulot Qo'shish</h2>
 
-<button type="submit">Yuborish</button>
+      <!-- Nomi -->
+      <div>
+        <label for="name" class="block text-sm font-semibold text-gray-700">Nomi</label>
+        <input type="text" name="name" id="name" required
+               class="mt-1 w-full rounded-xl border border-gray-300 p-3 shadow focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-500">
+      </div>
+
+      <!-- Narxi -->
+      <div>
+        <label for="price" class="block text-sm font-semibold text-gray-700">Narxi</label>
+        <input type="number" step="any" name="price" id="price" required
+               class="mt-1 w-full rounded-xl border border-gray-300 p-3 shadow focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-500">
+      </div>
+
+      <!-- Soni -->
+      <div>
+        <label for="count" class="block text-sm font-semibold text-gray-700">Soni</label>
+        <input type="number" name="count" id="count" required
+               class="mt-1 w-full rounded-xl border border-gray-300 p-3 shadow focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-500">
+      </div>
+
+      <!-- Tavsif (Textarea) -->
+      <div>
+        <label for="desc" class="block text-sm font-semibold text-gray-700">Tavsif</label>
+        <textarea name="desc" id="desc" rows="4" required
+                  class="mt-1 w-full rounded-xl border border-gray-300 p-3 shadow focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-500 resize-none"></textarea>
+      </div>
+
+      <!-- Reyting -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Reyting</label>
+        <div class="flex justify-center gap-1" id="star-container">
+          {% for i in "12345" %}
+          <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}" class="hidden">
+          <label for="star{{ i }}" data-index="{{ i }}"
+                 class="star text-3xl cursor-pointer text-gray-300 transition duration-200 hover:scale-110">&#9733;</label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Yuborish -->
+      <button type="submit"
+              class="w-full bg-indigo-600 text-white font-semibold py-3 rounded-xl hover:bg-indigo-700 transition duration-300 shadow-md hover:shadow-lg">
+        Yuborish
+      </button>
     </form>
 
+    <script>
+      const stars = document.querySelectorAll('.star');
+      const inputs = document.querySelectorAll('input[name="rating"]');
 
+      stars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+          const value = index + 1;
 
-</body>
-</html>
+          // inputni tanlangan qilib qo'yamiz
+          inputs.forEach(input => {
+            input.checked = parseInt(input.value) === value;
+          });
+
+          // yulduz ranglarini yangilash
+          stars.forEach((s, i) => {
+            if (i < value) {
+              s.classList.remove('text-gray-300');
+              s.classList.add('text-yellow-400');
+            } else {
+              s.classList.remove('text-yellow-400');
+              s.classList.add('text-gray-300');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+  </html>
