@@ -24,11 +24,8 @@ SECRET_KEY = 'django-insecure-o6m0c-g3m5jmuxo6gg*34j5ret!4-g8jeira7omoa(uscuzk$0
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    os.environ.get("RENDER_EXTERNAL_HOSTNAME", "dj-ui-products-list.onrender.com"),
-]
+
+ALLOWED_HOSTS = ['*'] if os.getenv('RENDER') else ['localhost']
 
 # Application definition
 
